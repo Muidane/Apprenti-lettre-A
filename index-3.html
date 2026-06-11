@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<title>Nêlêmwa & Nixumwak</title>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:#0D1F2D;font-family:Inter,sans-serif;color:#FAFAF8;min-height:100vh}
+button{font-family:Inter,sans-serif;cursor:pointer;border:0;background:transparent}
+input{font-family:"Josefin Sans",sans-serif;color:#FAFAF8}
+input:focus{outline:0}
+.screen{display:none;min-height:100vh}
+.screen.active{display:block}
+.screen.active.res-screen{display:flex!important;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:#0D1F2D;padding:24px}
+.top-bar{background:#1A3448;padding:20px 18px 14px;border-bottom:1px solid #ffffff11}
+.back-btn{color:#12B5C8;font-size:14px;margin-bottom:8px;display:block;background:transparent;border:0;padding:0;cursor:pointer;font-family:Inter,sans-serif}
+.top-bar h2{color:#FAFAF8;font-family:"Josefin Sans",sans-serif;font-size:22px}
+.hero{position:relative;background:linear-gradient(135deg,#0A7E8C,#1A3448);padding:52px 22px 36px;text-align:center;overflow:hidden}
+.hero svg.bg{position:absolute;top:0;left:0;width:100%;height:100%;opacity:.05;pointer-events:none}
+.hero-inner{position:relative;z-index:1}
+.hero-tag{font-size:12px;color:#12B5C8;letter-spacing:4px;font-family:"Josefin Sans",sans-serif;margin-bottom:8px}
+.hero h1{font-size:clamp(2rem,9vw,3rem);font-family:"Josefin Sans",sans-serif;font-weight:700;line-height:1.1;margin-bottom:12px}
+.hero h1 span{color:#12B5C8}
+.hero p{color:#F2E8D5;opacity:.8;font-size:14px;max-width:340px;margin:0 auto 24px}
+.hero-stats{display:flex;justify-content:center;gap:28px;flex-wrap:wrap}
+.sv{font-size:26px;font-family:"Josefin Sans",sans-serif;font-weight:700}
+.sl{font-size:11px;color:#12B5C8;letter-spacing:2px}
+.wave{display:block;width:100%;height:32px}
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 14px;max-width:600px;margin:0 auto}
+.menu-btn{background:#1A3448;border-radius:14px;padding:18px 14px;text-align:left;width:100%}
+.menu-btn:active{transform:scale(.97)}
+.menu-ico{font-size:26px;margin-bottom:8px}
+.menu-lbl{font-family:"Josefin Sans",sans-serif;font-weight:700;font-size:14px}
+.menu-sub{font-size:12px;margin-top:3px}
+.start-btn{display:block;width:calc(100% - 28px);margin:14px auto 28px;max-width:572px;padding:16px;border-radius:13px;font-family:"Josefin Sans",sans-serif;font-weight:700;font-size:15px;letter-spacing:1px;color:#fff;background:linear-gradient(90deg,#0A7E8C,#12B5C8);border:0;cursor:pointer}
+.wrap{padding:14px 14px 32px;max-width:620px;margin:0 auto}
+.lesson-card{width:100%;background:#1A3448;border-radius:14px;padding:18px;margin-bottom:10px;text-align:left;display:flex;align-items:center;gap:12px;border:1px solid #ffffff11;cursor:pointer}
+.lesson-card:active{transform:scale(.98)}
+.l-ico{width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.l-info{flex:1}
+.l-title{font-family:"Josefin Sans",sans-serif;font-weight:700;font-size:15px;margin-bottom:4px}
+.l-meta{color:#888;font-size:12px}
+.badge{display:inline-block;border-radius:99px;padding:2px 9px;font-size:11px;font-family:"Josefin Sans",sans-serif;font-weight:700;letter-spacing:.5px;margin-right:4px}
+.pbar-wrap{background:#ffffff22;border-radius:99px;height:7px;overflow:hidden;margin-top:7px}
+.pbar-fill{height:100%;border-radius:99px;transition:width .4s}
+.tab-hdr{position:relative;overflow:hidden}
+.tab-hdr-bg{position:absolute;top:0;left:0;width:100%;height:100%;opacity:.05;pointer-events:none}
+.tab-hdr-inner{position:relative;z-index:1;padding:22px 16px 0}
+.tabs-row{display:flex;gap:4px;padding:16px 0 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab-btn{flex-shrink:0;padding:8px 14px;border-radius:10px 10px 0 0;font-size:13px;font-weight:600;text-transform:capitalize;opacity:.7;color:white;border:1px solid rgba(255,255,255,.5);background:transparent;cursor:pointer}
+.tab-btn.on{opacity:1;background:white}
+.tab-content{padding:18px 14px 32px;max-width:620px;margin:0 auto}
+.vhead{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:6px}
+.vhead span{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:6px 4px}
+.vrow{display:grid;grid-template-columns:1fr 1fr 1fr;border-radius:8px;padding:9px 6px;margin-bottom:3px}
+.vrow.alt{background:#1A3448}
+.expr-card{background:#1A3448;border-radius:12px;padding:14px 16px;margin-bottom:9px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.diff-info{background:#1A344888;border-radius:9px;padding:10px 14px;margin-bottom:14px;color:#12B5C8;font-size:13px}
+.drow{display:grid;grid-template-columns:1fr 1fr 1fr;background:#1A3448;border-radius:8px;padding:11px 6px;margin-bottom:7px}
+.quiz-top{background:#1A3448;padding:14px 18px;border-bottom:1px solid #ffffff11}
+.quiz-top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.quiz-body{padding:22px 16px;max-width:520px;margin:0 auto}
+.qbox{background:#1A3448;border-radius:14px;padding:22px 18px;margin-bottom:18px}
+.qtxt{font-size:17px;font-weight:600;line-height:1.5}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{background:#1A3448;border:2px solid #ffffff22;border-radius:12px;padding:13px 10px;text-align:left;font-size:14px;font-weight:600;color:#FAFAF8;width:100%;cursor:pointer}
+.opt.sel{background:#0A7E8C33;border-color:#0A7E8C}
+.opt.ok{background:#2D5A2744;border-color:#2D5A27;color:#9ef}
+.opt.ko{background:#D4603A33;border-color:#D4603A;color:#E8845F}
+.tf-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tf{border:2px solid #ffffff22;border-radius:14px;padding:20px;font-size:17px;font-weight:700;font-family:"Josefin Sans",sans-serif;background:#1A3448;color:#FAFAF8;width:100%;cursor:pointer}
+.tf.sel{border-color:#0A7E8C;background:#0A7E8C33}
+.tf.ok{background:#2D5A2744;border-color:#2D5A27;color:#9ef}
+.tf.ko{background:#D4603A33;border-color:#D4603A}
+.fill-inp{width:100%;background:#1A3448;border-radius:12px;padding:14px 16px;font-size:16px;font-family:"Josefin Sans",sans-serif;color:#FAFAF8;border:2px solid #0A7E8C}
+.fill-inp.ok{border-color:#2D5A27}
+.fill-inp.ko{border-color:#D4603A}
+.fill-ans{margin-top:9px;padding:11px;background:#2D5A2722;border-radius:9px;color:#9ef;font-size:14px}
+.fb{margin-top:14px;padding:13px;border-radius:11px;font-weight:700;font-size:15px}
+.fb.ok{background:#2D5A2733;border:1px solid #2D5A27;color:#9ef}
+.fb.ko{background:#D4603A33;border:1px solid #D4603A;color:#E8845F}
+.act-btn{width:100%;margin-top:18px;padding:15px;border-radius:12px;font-family:"Josefin Sans",sans-serif;font-weight:700;font-size:16px;letter-spacing:1px;color:#fff;border:0;cursor:pointer}
+
+.res-list{background:#1A3448;border-radius:14px;padding:14px;margin-bottom:20px;width:100%;max-width:420px;max-height:220px;overflow-y:auto}
+.res-item{display:flex;align-items:flex-start;gap:9px;padding:5px 0;font-size:12px;line-height:1.4;border-bottom:1px solid #ffffff11}
+.res-item:last-child{border-bottom:0}
+.res-btns{display:flex;gap:10px;width:100%;max-width:420px}
+.res-btns button{flex:1;border-radius:12px;padding:14px;font-weight:700;font-family:"Josefin Sans",sans-serif;font-size:15px;cursor:pointer}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.stat-card{background:#1A3448;border-radius:14px;padding:18px;text-align:center}
+.rev-card{width:100%;background:#1A3448;border-radius:14px;padding:20px 18px;margin-bottom:11px;text-align:left;display:flex;align-items:center;gap:14px;border:1px solid #ffffff22;cursor:pointer}
+.rev-card:active{transform:scale(.98)}
+.sp-card{width:100%;background:#1A3448;border-radius:14px;margin-bottom:10px;text-align:left;display:flex;align-items:stretch;overflow:hidden;border:1px solid #ffffff22;cursor:pointer}
+.sp-card:active{transform:scale(.98)}
+.sp-img{width:88px;flex-shrink:0;background-size:cover;background-position:center;min-height:80px}
+.sp-info{padding:11px 12px;flex:1}
+.sp-name{font-family:"Josefin Sans",sans-serif;font-weight:700;font-size:14px;margin-bottom:2px}
+.sp-sci{color:#777;font-size:11px;font-style:italic;margin-bottom:5px}
+.sp-det-img{width:100%;max-height:240px;object-fit:cover;display:block}
+.sp-det-body{padding:18px 16px}
+.sp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#1A3448;border-radius:12px;padding:16px;margin-bottom:12px}
+.sp-lbl{font-size:11px;letter-spacing:1px;margin-bottom:3px}
+.sp-val{font-family:"Josefin Sans",sans-serif;font-weight:700;font-size:15px}
+.sp-desc{background:#1A3448;border-radius:12px;padding:16px;color:#F2E8D5;line-height:1.8;font-size:14px}
+.cat-lbl{color:#888;font-size:11px;letter-spacing:2px;font-weight:700;padding:12px 4px 5px;text-transform:uppercase}
+.info-box{background:#1A344888;border-radius:9px;padding:10px 14px;margin-bottom:14px;font-size:13px}
+</style>
+</head>
+<body>
+
+<div id="s-home" class="screen active">
+  <div class="hero">
+    <svg class="bg" xmlns="http://www.w3.org/2000/svg">
+      <defs><pattern id="kp" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+        <polygon points="30,5 55,20 55,40 30,55 5,40 5,20" fill="transparent" stroke="white" stroke-width="1"/>
+        <line x1="30" y1="5" x2="30" y2="55" stroke="white" stroke-width=".5"/>
+        <line x1="5" y1="20" x2="55" y2="40" stroke="white" stroke-width=".5"/>
+        <line x1="55" y1="20" x2="5" y2="40" stroke="white" stroke-width=".5"/>
+      </pattern></defs>
+      <rect width="100%" height="100%" fill="url(#kp)"/>
+    </svg>
+    <div class="hero-inner">
+      <div class="hero-tag">GRAND NORD · NOUVELLE-CALÉDONIE</div>
+      <h1>Nêlêmwa<br><span>&amp; Nixumwak</span></h1>
+      <p>Dictionnaire Nêlêmwa–Nixumwak–Français–Anglais · Langues kanak du Grand Nord.</p>
+      <div class="hero-stats">
+        <div><div class="sv" id="h-done">0/7</div><div class="sl">LEÇONS</div></div>
+        <div><div class="sv" id="h-pts">0</div><div class="sl">POINTS</div></div>
+        <div><div class="sv">194</div><div class="sl">MOTS</div></div>
+      </div>
+    </div>
+  </div>
+  <svg class="wave" viewBox="0 0 1200 60" preserveAspectRatio="none">
+    <path d="M0,30 C200,60 400,0 600,30 C800,60 1000,0 1200,30 L1200,60 L0,60 Z" fill="#0D1F2D"/>
+  </svg>
+  <div style="padding:0 0 10px">
+    <div class="menu-grid" id="menu-grid"></div>
+    <button class="start-btn" onclick="nav('s-lessons')">COMMENCER L'APPRENTISSAGE →</button>
+  </div>
+</div>
+
+<div id="s-lessons" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="nav('s-home')">← Retour</button>
+    <h2>📖 Leçons</h2>
+  </div>
+  <div class="wrap" id="lessons-list"></div>
+</div>
+
+<div id="s-detail" class="screen">
+  <div id="d-hdr"></div>
+  <div class="tab-content" id="d-body"></div>
+</div>
+
+<div id="s-quiz" class="screen">
+  <div class="quiz-top">
+    <div class="quiz-top-row">
+      <button id="q-close" style="font-size:20px;color:#12B5C8;background:transparent;border:0;cursor:pointer">✕</button>
+      <span id="q-counter" style="font-family:'Josefin Sans',sans-serif;font-weight:700">1/6</span>
+      <span id="q-pts" style="color:#C9943A;font-weight:700">0 pts</span>
+    </div>
+    <div class="pbar-wrap"><div class="pbar-fill" id="q-prog" style="width:0%;background:#0A7E8C"></div></div>
+  </div>
+  <div class="quiz-body" id="q-body"></div>
+</div>
+
+<div id="s-result" class="screen res-screen">
+  <div style="font-size:72px;margin-bottom:14px" id="r-ico"></div>
+  <div style="font-family:'Josefin Sans',sans-serif;font-size:30px;font-weight:700;margin-bottom:6px" id="r-grade"></div>
+  <div style="font-size:56px;font-family:'Josefin Sans',sans-serif;font-weight:700" id="r-pct"></div>
+  <div style="color:#888;margin:8px 0 22px;font-size:15px" id="r-sub"></div>
+  <div class="res-list" id="r-list"></div>
+  <div class="res-btns">
+    <button id="r-retry" style="border:2px solid #0A7E8C;color:#0A7E8C;background:transparent">RÉESSAYER</button>
+    <button id="r-done" style="background:#0A7E8C;color:white;border:0">TERMINER</button>
+  </div>
+</div>
+
+<div id="s-exprs" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="nav('s-home')">← Retour</button>
+    <h2>💬 Expressions</h2>
+  </div>
+  <div class="wrap" id="exprs-body"></div>
+</div>
+
+<div id="s-diff" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="nav('s-home')">← Retour</button>
+    <h2>🔀 Nêlêmwa (P) / Nixumwak (K)</h2>
+  </div>
+  <div class="wrap" id="diff-body"></div>
+</div>
+
+<div id="s-stats" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="nav('s-home')">← Retour</button>
+    <h2>📊 Statistiques</h2>
+  </div>
+  <div class="wrap" id="stats-body"></div>
+</div>
+
+<div id="s-revision" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="nav('s-home')">← Retour</button>
+    <h2>🔁 Révisions</h2>
+  </div>
+  <div class="wrap" id="rev-body"></div>
+</div>
+
+<div id="s-species" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="nav('s-home')">← Retour</button>
+    <h2>🔬 Faune &amp; Flore</h2>
+  </div>
+  <div class="wrap" id="sp-list"></div>
+</div>
+
+<div id="s-sp-detail" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="nav('s-species')">← Retour à la liste</button>
+    <h2 id="sp-det-title"></h2>
+  </div>
+  <div id="sp-det-body"></div>
+</div>
+
+<script>
+var T={lagon:"#0A7E8C",lagonL:"#12B5C8",foret:"#2D5A27",corail:"#D4603A",corailL:"#E8845F",nuit:"#0D1F2D",nuitM:"#1A3448",blanc:"#FAFAF8",gold:"#C9943A",sable:"#F2E8D5"};
+
+var LESSONS=[
+{id:1,level:1,title:"Les Personnes & Famille",emoji:"👥",theme:"#0A7E8C",
+cours:"Le vocabulaire des personnes est fondamental. En Nêlêmwa/Nixumwak, les relations de parenté sont très précises. « aguk » (var. agu) désigne l'homme, la personne, les gens du pays.",
+voc:[
+{p:"aguk",k:"aguk",fr:"homme, personne, gens"},
+{p:"ak",k:"ak",fr:"homme, mâle"},
+{p:"âlô",k:"âlô",fr:"enfant, jeune homme"},
+{p:"thaamwa",k:"thaamwa",fr:"femme"},
+{p:"âlô hak",k:"âlô hak",fr:"jeune homme"},
+{p:"âlô thaamwa",k:"âlô thaamwa",fr:"jeune fille"},
+{p:"aroo-n",k:"aroo-n",fr:"mari, époux"},
+{p:"â-maawa-n",k:"â-maawa-n",fr:"époux, couple"},
+{p:"â-mwala-n",k:"â-mwala-n",fr:"frère et sœur"},
+{p:"â-vaama-n",k:"â-vaama-n",fr:"sœur et frère"},
+{p:"â-waxi-n",k:"â-waxi-n",fr:"père et fils/fille"},
+{p:"â-vabuu-n",k:"â-vabuu-n",fr:"grand-père et petit-fils"},
+{p:"â-beega-n",k:"â-beega-n",fr:"cousins"},
+{p:"axomoo-n",k:"axomoo-n",fr:"mère, oncle maternel"},
+{p:"aayo",k:"aayo",fr:"chef"},
+{p:"aman",k:"aman",fr:"envoyé, messager"},
+{p:"âbeen",k:"âbeen",fr:"étranger, nouveau"},
+{p:"ai",k:"ai",fr:"non ; ou, mais, soit (coordinateur)"},
+{p:"whâlirii-n",k:"wââti-n",fr:"oncle maternel"},
+],
+expr:[
+{e:"Elo !",t:"Oui !"},
+{e:"Ai !",t:"Non ! / Ou (coordinateur)"},
+{e:"Ayai !",t:"Non ! (renforcé)"},
+{e:"Au !",t:"Hélas ! (nostalgie)"},
+{e:"aroo-ny",t:"mon mari"},
+{e:"aayo-ny",t:"mon chef"},
+{e:"tâlâ âma-n !",t:"Écoute comme il parle fort !"},
+{e:"thu awôlô",t:"préparer le mariage (litt. faire la maison)"},
+{e:"âlô i na",t:"ma tante"},
+{e:"i u agu",t:"c'est une personne"},
+{e:"awa-m lai ai kuvic ?",t:"veux-tu du riz ou de l'igname ?"},
+{e:"fo aroo-n",t:"elle est mariée"},
+{e:"thu âlô-xâac âlô ena !",t:"il n'en fait qu'à sa tête, cet enfant !"},
+{e:"wa noolî u-thu-âlô-xâây-i ye !",t:"regardez son entêtement !"},
+{e:"axeena xe i fhe thaamwa ena",t:"cet homme a épousé cette femme"},
+{e:"axomoo-ny",t:"ma mère / mon oncle maternel"},
+{e:"ayaabwar-i na",t:"mon clan maternel"},
+{e:"aye-vââlâ-ny",t:"mon compagnon de route"},
+],
+diff:[
+{p:"naan (P)",k:"aawuk (K)",fr:"mouche"},
+{p:"buburenga (P)",k:"aamwep (K)",fr:"tarpon (poisson)"},
+{p:"whâlirii-n (P)",k:"wââti-n (K)",fr:"oncle maternel"},
+{p:"ava-t (P)",k:"abi-t (K)",fr:"côté, flanc"},
+],
+quiz:[
+{tp:"t",q:"Que signifie « aguk » ?",o:["Chef","Étranger","Homme, personne","Mari"],a:2},
+{tp:"t",q:"Que signifie « âlô-raamwa » ?",o:["Jeune homme","Jeune fille","Femme mariée","Enfant"],a:1},
+{tp:"m",q:"Comment dit-on « chef » ?",o:["aman","aayo","âbeen","aguk"],a:1},
+{tp:"m",q:"Comment dit-on « mari » ?",o:["â-maawa-n","aroo-n","ak","â-mwala-n"],a:1},
+{tp:"tf",q:"« Âbeen » signifie cousin.",a:false},
+{tp:"tf",q:"« Â-mwala-n » désigne frère et sœur.",a:true},
+{tp:"f",q:"âlô _____ = jeune homme",a:"hak"},
+{tp:"f",q:"_____ = envoyé, messager",a:"aman"},
+{tp:"s",q:"Écrivez : mon chef",a:"aayo-ny"},
+{tp:"v",q:"Forme Nixumwak (K) de « naan » (mouche) ?",a:"aawuk"},
+]},
+{id:2,level:2,title:"Les Verbes d'action",emoji:"⚡",theme:"#2D5A27",
+cours:"Les verbes se placent après le pronom sujet. « adaxe » = partager, « ap » = rire, « â » = partir, « alu » = regarder attentivement, « aa » = casser.",
+voc:[
+{p:"ap",k:"ap",fr:"rire"},
+{p:"â",k:"â",fr:"partir, s'éloigner"},
+{p:"alu",k:"alu",fr:"observer, fixer, regarder"},
+{p:"adaxe",k:"adaxe",fr:"partager"},
+{p:"aa",k:"aa",fr:"casser, briser"},
+{p:"aee",k:"aee",fr:"casser (variante)"},
+{p:"awi",k:"awi",fr:"rire de quelqu'un"},
+{p:"aya",k:"aya",fr:"sentir, supporter (douleur)"},
+{p:"âdap",k:"âdap",fr:"être calme"},
+{p:"alawuk",k:"câlîu",fr:"avoir faim"},
+{p:"axe",k:"axe",fr:"voir (inanimé)"},
+{p:"axi",k:"axi",fr:"voir, rendre visite (animé)"},
+{p:"âbwe",k:"âbwe",fr:"dévier, retourner"},
+],
+expr:[
+{e:"i ap",t:"il rit"},
+{e:"i â",t:"il part"},
+{e:"i alu âlô",t:"il observe les enfants"},
+{e:"i adaxe",t:"il partage"},
+{e:"na alawuk",t:"j'ai faim (Nêlêmwa)"},
+{e:"âdap kuru",t:"il n'y a pas de vent"},{e:"âdap fwââmwa",t:"le pays est calme"},{e:"i â shi-n",t:"il va vers lui"},{e:"na aya dua i khiibo-na",t:"j'ai senti la douleur quand il m'a frappé"},{e:"awa-ny me na tu alu o civa eli",t:"je veux aller assister à cette danse"},{e:"cf. maaluk",t:"avoir soif (cf. alawuk = avoir faim)"},
+{e:"ayo alu !",t:"ne regarde pas fixement !"},
+{e:"i alu i hleena âlô",t:"elle observe ces enfants"},
+{e:"i ap thaamwa hleny",t:"cette femme rit"},
+{e:"i awi-e a Pwayili",t:"Pwayili rit de lui"},
+{e:"i âbwe thuada eli",t:"il dévie ce javelot"},
+{e:"na aya o khîlû",t:"j'ai souffert de cette maladie"},
+{e:"awa-m hele ?",t:"veux-tu un couteau ?"},
+{e:"je awa-n",t:"il aime quelqu'un"},
+{e:"awa-n jara khu mido",t:"il a envie de manger du taro"},
+{e:"thu awa-n",t:"il dresse un animal"},
+],
+diff:[
+{p:"alawuk (P)",k:"câlîu (K)",fr:"avoir faim"},
+{p:"aa (casser)",k:"aee (var.)",fr:"casser"},
+{p:"awi (animé)",k:"awilî (inan.)",fr:"rire de qqn / qqch"},
+],
+quiz:[
+{tp:"t",q:"Que signifie « alu » ?",o:["Partir","Rire","Observer, fixer","Casser"],a:2},
+{tp:"t",q:"Que signifie « aya » ?",o:["Voir","Sentir, supporter","Partager","Calme"],a:1},
+{tp:"m",q:"Comment dit-on « partager » ?",o:["ap","adaxe","alu","aa"],a:1},
+{tp:"m",q:"Comment dit-on « partir » ?",o:["ap","â","alu","aee"],a:1},
+{tp:"tf",q:"« Âdap » signifie casser.",a:false},
+{tp:"tf",q:"« Adaxe » signifie partager.",a:true},
+{tp:"f",q:"i _____ = il rit",a:"ap"},
+{tp:"f",q:"_____ = partager",a:"adaxe"},
+{tp:"s",q:"Écrivez : il part",a:"i â"},
+{tp:"v",q:"Forme Nixumwak (K) de « alawuk » (avoir faim) ?",a:"câlîu"},
+]},
+{id:3,level:3,title:"Noms d'agents (aa-)",emoji:"🏷️",theme:"#D4603A",
+cours:"Le préfixe « aa- » forme des noms d'agent : celui qui... Exemples : aa-kaang = voleur, aa-hobwak = gardien, aa-hoot = orateur.",
+voc:[
+{p:"aa-hobwak",k:"aa-hobwak",fr:"gardien"},
+{p:"aa-kaang",k:"aa-kaang",fr:"voleur"},
+{p:"aa-hoot",k:"aa-hoot",fr:"orateur"},
+{p:"aa-hân",k:"aa-hân",fr:"chasseur"},
+{p:"aa-oot",k:"aa-oot",fr:"chanteur"},
+{p:"aa-nap",k:"aa-nap",fr:"menteur"},
+{p:"aa-shaya",k:"aa-shaya",fr:"serviteur"},
+{p:"aa-telak",k:"aa-telak",fr:"mendiant"},
+{p:"aa-palu",k:"aa-palu",fr:"avare"},
+{p:"aa-pi",k:"aa-pi",fr:"gourmand"},
+{p:"aa-vhaa",k:"aa-vhaa",fr:"porte-parole, bavard"},
+{p:"aa-tîlîxâac",k:"aa-tîlîxâac",fr:"coléreux"},
+{p:"aa-palaic",k:"aa-palaic",fr:"maladroit"},
+{p:"aa-haxaxa",k:"aa-haxaxa",fr:"peureux"},
+{p:"aayo",k:"aayo",fr:"chef"},
+{p:"aayuup",k:"aayuup",fr:"gros crabe rouge de terre"},
+],
+expr:[
+{e:"aa-hobwak",t:"gardien"},
+{e:"aa-kaang",t:"voleur"},
+{e:"aa-oot",t:"chanteur"},
+{e:"aa-nap",t:"menteur"},{e:"aa-hoot",t:"orateur (celui qui a droit à la parole)"},{e:"aa-vhaa",t:"porte-parole, bavard"},{e:"aa-shaya",t:"serviteur"},{e:"aa-telak",t:"mendiant"},{e:"shi axabai aa-hobwaxe-a hooli mwa eli",t:"chez le gardien de cette maison-là"},
+],
+diff:[
+{p:"aa-yhajan",k:"aa-kaang",fr:"voleur (deux formes)"},
+],
+quiz:[
+{tp:"t",q:"Que signifie « aa-hoot » ?",o:["Chasseur","Orateur","Chanteur","Gardien"],a:1},
+{tp:"t",q:"Que signifie « aa-oot » ?",o:["Pêcheur","Gardien","Chanteur","Menteur"],a:2},
+{tp:"m",q:"Comment dit-on « gardien » ?",o:["aa-kaang","aa-hobwak","aa-hoot","aa-nap"],a:1},
+{tp:"m",q:"Comment dit-on « serviteur » ?",o:["aa-vhaa","aa-shaya","aa-palu","aa-oot"],a:1},
+{tp:"tf",q:"« Aa-nap » signifie chanteur.",a:false},
+{tp:"tf",q:"« Aa-hân » signifie chasseur.",a:true},
+{tp:"f",q:"aa-_____ = voleur",a:"kaang"},
+{tp:"f",q:"aa-_____ = orateur",a:"hoot"},
+{tp:"s",q:"Comment dit-on un avare ?",a:"aa-palu"},
+]},
+{id:4,level:4,title:"Les Pronoms",emoji:"🔤",theme:"#C9943A",
+cours:"Le Nêlêmwa distingue trois nombres : singulier, duel (2 personnes) et pluriel. Bases pronominales : ho- (sg), hli- (duel), hla- (pl).",
+voc:[
+{p:"ia",k:"ia",fr:"je (sg)"},
+{p:"i",k:"i",fr:"il/elle (sg)"},
+{p:"ara",k:"ara",fr:"nous deux (duel excl.)"},
+{p:"âboro",k:"âboro",fr:"nous (pl.)"},
+{p:"ho-",k:"ho-",fr:"base sg"},
+{p:"hli-",k:"hli-",fr:"base duel"},
+{p:"hla-",k:"hla-",fr:"base pl."},
+{p:"aguleny",k:"aguleny",fr:"celui-ci (proche)"},
+{p:"agux-ena",k:"agux-ena",fr:"celui-là (proche)"},
+{p:"agux-ali",k:"agux-ali",fr:"celui-là (distance moy.)"},
+{p:"axaleny",k:"axaleny",fr:"cet homme-ci"},
+{p:"axeena",k:"axeena",fr:"cet homme-là"},
+],
+expr:[
+{e:"na â",t:"je pars"},
+{e:"i ap",t:"il rit"},
+{e:"hli pe-alu-i",t:"ils se regardent (duel)"},
+{e:"yaman aida",t:"nous en haut"},{e:"hla-ali",t:"eux là-bas (pluriel)"},{e:"aguleny",t:"celui-ci (sg, déictique proche)"},{e:"agux-ali",t:"celui-là (à distance moyenne)"},{e:"axamalileny",t:"ces deux hommes-ci"},{e:"axamahlaaleny",t:"ces hommes-ci (pluriel)"},
+{e:"axeena !",t:"eh ! l'homme là-bas ! (vocatif)"},
+{e:"axeeda !",t:"eh ! l'homme en haut ! (vocatif)"},
+{e:"axeedu !",t:"eh ! l'homme en bas ! (vocatif)"},
+{e:"co axi ri ?",t:"qui as-tu vu ?"},
+{e:"i axi hobai hulak",t:"il voit ce vieux"},
+{e:"co axe wany ena ?",t:"tu vois ce bateau ?"},
+{e:"kio na axe a agu o aaxiik",t:"je n'ai pas vu la moindre personne"},
+],
+diff:[
+{p:"aa (P)",k:"ari (K)",fr:"aspect itératif (encore)"},
+{p:"ho- (sg)",k:"hli- (duel)",fr:"bases pronominales"},
+],
+quiz:[
+{tp:"t",q:"Que signifie « ara » ?",o:["Je","Il","Nous deux","Vous"],a:2},
+{tp:"t",q:"Que signifie « hla- » ?",o:["Singulier","Duel","Pluriel","Chef"],a:2},
+{tp:"m",q:"Base pronominale du duel ?",o:["ho-","hli-","hla-","ia"],a:1},
+{tp:"tf",q:"Le Nêlêmwa a un pronom duel.",a:true},
+{tp:"tf",q:"hla- est la base du singulier.",a:false},
+{tp:"f",q:"_____ â = je pars",a:"na"},
+{tp:"v",q:"Forme Nixumwak (K) du mot encore (aa) ?",a:"ari"},
+]},
+{id:5,level:5,title:"Localisation & Espace",emoji:"📍",theme:"#6B3FA0",
+cours:"La localisation est très développée. Les déictiques -ali (distance), -aida (en haut/sud), -maidu (en bas/nord) s'attachent aux bases. Le préfixe ara- indique une surface, un côté.",
+voc:[
+{p:"bwa",k:"bwa",fr:"ici"},
+{p:"xadu",k:"xadu",fr:"là-bas"},
+{p:"pwi",k:"pwi",fr:"en haut"},
+{p:"boro",k:"boro",fr:"en bas"},
+{p:"-ali",k:"-ali",fr:"déict. à distance"},
+{p:"-aida",k:"-aida",fr:"en haut, au sud"},
+{p:"-maidu",k:"-maidu",fr:"en bas, au nord"},
+{p:"awôlô",k:"awôlô",fr:"maison, terroir, chez soi"},
+{p:"awôlôô-ny",k:"awôlôô-ny",fr:"chez moi"},
+{p:"ara-hoogo",k:"ara-hoogo",fr:"versant de la montagne"},
+{p:"ara-maa-t",k:"ara-maa-t",fr:"place du village"},
+{p:"alibang",k:"alibang",fr:"pente à pic"},
+{p:"alilaan",k:"alilaan",fr:"espace"},
+{p:"alar-ali",k:"alar-ali",fr:"de l'autre côté"},
+],
+expr:[
+{e:"i â bwa",t:"il part ici"},{e:"i â maidu",t:"il va là-bas"},
+{e:"i alu xadu",t:"il regarde là-bas"},
+{e:"awôlôô-ny",t:"chez moi"},
+{e:"aramaa fwamwa",t:"place du village"},{e:"bwa kavebu xe alat",t:"dans cette chefferie désertée"},{e:"cêê alibang ara-hoogo ena",t:"la pente de cette montagne est très à pic"},{e:"na pe â bwa aramaa awôlô",t:"je passe par la place du village"},{e:"ara-hoogo na alar-ali",t:"le versant de la montagne de l'autre côté"},{e:"fwa aida",t:"le trou là-haut"},{e:"co fweneng o alibang ena !",t:"fais attention à cette pente à pic !"},{e:"ara-maa fwamwa",t:"place du village (var.)"},{e:"aramaa xuru",t:"exposé au vent"},{e:"hla wâlem-â",t:"ils vont de lieu en lieu"},
+{e:"wa mu-â",t:"vous vivez de lieu en lieu"},
+{e:"pe-â hmwiny wi",t:"l'eau passe par là"},
+{e:"ma pe-aramaa-i",t:"nous sommes face à face"},
+{e:"aramaa mwa",t:"le devant de la maison"},
+{e:"ni shade ali",t:"la semaine prochaine"},
+{e:"ni yeewar-ali mon",t:"plus tard, à l'avenir"},
+{e:"hmwalux-ali",t:"le mois prochain"},
+{e:"ni taan mahla-ali",t:"pour l'avenir"},
+{e:"kio avir-ena bu avir-eny",t:"pas de ce côté-là mais de ce côté-ci"},
+],
+diff:[
+{p:"ava-t (P)",k:"abi-t (K)",fr:"côté / quelques"},
+{p:"bayaxap (P)",k:"bwabwalic (K)",fr:"en travers"},
+],
+quiz:[
+{tp:"t",q:"Que signifie « awôlô » ?",o:["Pente","Côté","Maison, terroir","Espace"],a:2},
+{tp:"t",q:"Que signifie « alibang » ?",o:["Espace","Pente à pic","Côté","Place"],a:1},
+{tp:"m",q:"Comment dit-on chez moi ?",o:["bwa","awôlôô-ny","xadu","alilaan"],a:1},
+{tp:"tf",q:"Boro signifie en haut.",a:false},
+{tp:"tf",q:"Alilaan signifie espace.",a:true},
+{tp:"f",q:"i â _____ = il part là-bas",a:"maidu"},
+{tp:"f",q:"ara-_____ = versant de la montagne",a:"hoogo"},
+{tp:"s",q:"Écrivez : chez moi",a:"awôlôô-ny"},
+{tp:"v",q:"Forme Nixumwak (K) de ava-t (côté) ?",a:"abi-t"},
+]},
+{id:6,level:6,title:"Les Nombres & Quantité",emoji:"🔢",theme:"#8B4A2B",
+cours:"Les nombres utilisent le classifieur axa- pour les animés. Le préfixe au- forme les multiplicatifs (fois).",
+voc:[
+{p:"aaxiik",k:"aaxiik",fr:"un (animé)"},
+{p:"aaru",k:"aaru",fr:"deux (animés)"},
+{p:"aaxan",k:"aaxan",fr:"trois (animés)"},
+{p:"aavaak",k:"aapaak",fr:"quatre (animés)"},
+{p:"aanem",k:"aanem",fr:"cinq (animés)"},
+{p:"aanemgiik",k:"aanemgiik",fr:"six (animés)"},
+{p:"aanemdu",k:"aanemdu",fr:"sept (animés)"},
+{p:"aanemgaan",k:"aanemgan",fr:"huit (animés)"},
+{p:"aanembaak",k:"aanembaak",fr:"neuf (animés)"},
+{p:"aaxi-ak",k:"aaxi-ak",fr:"vingt (litt. un homme)"},
+{p:"auriik",k:"auriik",fr:"une fois"},
+{p:"auru",k:"auru",fr:"deux fois"},
+{p:"auxan",k:"auxan",fr:"trois fois"},
+{p:"auxoxo",k:"auxoxo",fr:"beaucoup de fois"},
+{p:"auneda ?",k:"auneda ?",fr:"combien de fois ?"},
+{p:"aaneda ?",k:"aaneda ?",fr:"combien ? (animés)"},
+],
+expr:[
+{e:"aaru i hli",t:"deux d'entre eux"},
+{e:"aavaak ak",t:"quatre-vingts (litt. quatre hommes)"},
+{e:"auriik",t:"une fois"},
+{e:"auneda ?",t:"combien de fois ?"},{e:"auneda i yo na thoogi-e ?",t:"combien de fois l'as-tu appelé ?"},{e:"auneda fââlâ-m ?",t:"combien de fois as-tu fait le voyage ?"},{e:"aaneda agu mahleeli co axi-hla ?",t:"combien de gens as-tu vus ?"},{e:"auxoxo i na...",t:"cela fait plusieurs fois que je..."},{e:"auru i hli",t:"deux d'entre eux"},{e:"aanemw-i hla",t:"elles sont cinq (litt. cinq de elles)"},{e:"i aa oda-me auriik",t:"elle remonte une fois de plus"},
+{e:"auriix-i na na thoogi-e",t:"je l'ai appelé une fois"},
+{e:"i diya me auru",t:"elle le fait deux fois"},
+{e:"i xam tâlâ auru",t:"elle ne l'a entendu que deux fois"},
+{e:"ni shade pwagiik xe khaa auru i na na oda Numia",t:"deux fois par semaine je vais à Nouméa"},
+{e:"cêê auxoxo i na na thoogi-e",t:"je l'ai appelé de nombreuses fois"},
+{e:"auneda i yo na kûûra pwâ-ciic ?",t:"combien de fois as-tu mangé des fruits ?"},
+{e:"aaneda shâ-pwia-m nok ?",t:"combien de poissons as-tu pêchés ?"},
+],
+diff:[
+{p:"aavaak (P)",k:"aapaak (K)",fr:"quatre (animés)"},
+{p:"aanemgaan (P)",k:"aanemgan (K)",fr:"huit (var. orthographique)"},
+],
+quiz:[
+{tp:"t",q:"Que signifie « aaru » ?",o:["Un","Deux","Trois","Quatre"],a:1},
+{tp:"t",q:"Que signifie « auxoxo » ?",o:["Une fois","Deux fois","Beaucoup de fois","Cinq fois"],a:2},
+{tp:"m",q:"Comment dit-on cinq (animés) ?",o:["aaxan","aavaak","aanem","aaru"],a:2},
+{tp:"m",q:"Comment dit-on une fois ?",o:["auru","auriik","auxan","auvaak"],a:1},
+{tp:"tf",q:"Aaxiik signifie un (animé).",a:true},
+{tp:"tf",q:"Aavaak signifie cinq.",a:false},
+{tp:"f",q:"au-_____ = trois fois",a:"xan"},
+{tp:"f",q:"_____ ? = combien de fois ?",a:"auneda"},
+{tp:"v",q:"Forme Nixumwak (K) de aavaak (quatre) ?",a:"aapaak"},
+]},
+{id:7,level:7,title:"Nature & Environnement",emoji:"🌿",theme:"#2D7A4F",
+cours:"Le vocabulaire de la nature reflète l'environnement du Grand Nord. at = soleil, aut = houle. Les fruits ont quatre stades : aava (vert), shââlaxak (va mûrir), galamià (jaunit), mee (mûr).",
+voc:[
+{p:"at",k:"at",fr:"soleil"},
+{p:"maale-at",k:"maale-at",fr:"lumière du soleil"},
+{p:"aut",k:"aut",fr:"houle, onde, sillage"},
+{p:"alaba",k:"alaba",fr:"braise, charbon"},
+{p:"amwat",k:"amwat",fr:"arbuste de rivage"},
+{p:"aamuu (Koumac)",k:"mabo (Poum)",fr:"guêpe, abeille"},
+{p:"aarau",k:"aarau",fr:"requin dormeur"},
+{p:"alaat",k:"alaat",fr:"picot rayé (poisson)"},
+{p:"aava",k:"aava",fr:"fruit pas mûr, vert"},
+{p:"mee",k:"mee",fr:"fruit mûr et comestible"},
+{p:"shââlaxak",k:"shââlaxak",fr:"fruit qui va mûrir"},
+{p:"galamià",k:"galamià",fr:"fruit qui jaunit"},
+{p:"ara-bwaa-t",k:"ara-bwaa-t",fr:"crâne"},
+{p:"ara-wan",k:"ara-wan",fr:"carapace de tortue"},
+{p:"aningo",k:"aningo",fr:"indigo (plante)"},
+{p:"aloe",k:"aloe",fr:"agave géant / aloès"},
+{p:"awaala",k:"awaala",fr:"étoile du matin"},
+],
+expr:[
+{e:"na ni at",t:"au soleil"},
+{e:"aava pwâ-ciiy-ena",t:"ce fruit est encore vert"},
+{e:"maale-at",t:"lumière du soleil"},{e:"aava pwâ-ciiy-ena",t:"ce fruit est encore vert"},{e:"i xam pwâ axa-t",t:"c'est le seul garçon de la famille"},{e:"na me alabwa-t pwagiik",t:"donne-moi une moitié de noix de coco"},{e:"nooli axomoo naabuy-ena !",t:"regarde ce gros moustique !"},{e:"u-aava-o thala-t",t:"la finesse des bords (fruit vert)"},{e:"aula pânâât",t:"ondes provoquées par une pierre"},{e:"aula wany",t:"sillage du bateau"},{e:"i tuuli axiuu fwamwa",t:"il éprouve une grande nostalgie pour son pays"},
+{e:"na tuuli axiuu-hla",t:"je me languis d'eux"},
+{e:"xu maaxuk âlââ thu tada",t:"elles (oranges) sont sèches à force de jouer à la balle"},
+{e:"than noo-n âlââ khon bai",t:"il est enroué à force de tousser"},
+{e:"bwa nunu soleil",t:"(cf.) bwa nunu = au soleil"},
+{e:"axo yo thea o hele !",t:"il ne faut pas jouer avec ce couteau !"},
+{e:"i civa bwa",t:"il danse ici"},
+{e:"aramaa-t âlô",t:"il danse face aux enfants"},{e:"na ni at",t:"au soleil"},
+],
+diff:[
+{p:"aamuu (Koumac)",k:"mabo (Poum)",fr:"guêpe, abeille"},
+{p:"tha-t (P)",k:"araxa-t (K)",fr:"bouture d'igname/taro"},
+{p:"naan (P)",k:"aawuk (K)",fr:"mouche"},
+{p:"buburenga (P)",k:"aamwep (K)",fr:"tarpon (poisson)"},
+],
+quiz:[
+{tp:"t",q:"Que signifie « at » ?",o:["Lune","Étoile","Soleil","Vent"],a:2},
+{tp:"t",q:"Que signifie « alaba » ?",o:["Houle","Braise, charbon","Jonc","Crâne"],a:1},
+{tp:"m",q:"Quel mot désigne l'abeille à Koumac ?",o:["mabo","aamuu","naan","aarau"],a:1},
+{tp:"tf",q:"Mee désigne un fruit pas mûr.",a:false},
+{tp:"tf",q:"Aarau est un requin dormeur.",a:true},
+{tp:"f",q:"maale-_____ = lumière du soleil",a:"at"},
+{tp:"f",q:"ara-_____ = carapace de tortue",a:"wan"},
+{tp:"v",q:"Forme de Poum pour aamuu (abeille) ?",a:"mabo"},
+]},
+];
+
+var SPECIES=[
+{fr:"Picot rayé",sci:"Siganus lineatus",en:"Golden-lined Rabbitfish",p:"alaat",k:"alaat",cat:"Poissons",desc:"Poisson des lagons et récifs coralliens. Herbivore, se nourrit d'algues. Taille : jusqu'à 40 cm. Nageoires épineuses venimeuses.",img:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Siganus_lineatus.jpg/600px-Siganus_lineatus.jpg",col:"#0A7E8C"},
+{fr:"Requin dormeur",sci:"Nebrius concolor",en:"Tawny Nurse Shark",p:"aarau",k:"aarau",cat:"Poissons",desc:"Requin de fond des récifs indo-pacifiques. Nocturne, il se repose le jour sous les coraux. Inoffensif pour l'homme. Peut atteindre 3 m.",img:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Nebrius_ferrugineus_-_Maldives.jpg/600px-Nebrius_ferrugineus_-_Maldives.jpg",col:"#5B8DD9"},
+{fr:"Tarpon indo-pacifique",sci:"Megalops cyprinoides",en:"Indo-Pacific Tarpon",p:"buburenga (P)",k:"aamwep (K)",cat:"Poissons",desc:"Grand poisson argenté des eaux côtières et mangroves du Pacifique. Reconnaissable à ses grandes écailles et sa mâchoire proéminente.",img:"https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Megalops_cyprinoides.jpg/600px-Megalops_cyprinoides.jpg",col:"#C9943A"},
+{fr:"Clovisse (bivalve)",sci:"Donax (Latona) cuneatus",en:"Wedge Clam",p:"aa-kaang (2e sens)",k:"aa-kaang",cat:"Coquillages",desc:"Petit bivalve triangulaire des plages de sable fin. Métaphore : lors de la cuisson il vole les mollusques des autres coquilles, d'où le nom aa-kaang (voleur).",img:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Donax_vittatus.jpg/600px-Donax_vittatus.jpg",col:"#D4603A"},
+{fr:"Oeil de chat (coquillage)",sci:"Turbo petholatus",en:"Tapestry Turban Shell",p:"âlaan",k:"âlaan",cat:"Coquillages",desc:"Gastéropode aux motifs colorés. Son opercule calcaire vert est appelé oeil de chat et utilisé en bijouterie traditionnelle.",img:"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Turbo_petholatus.jpg/600px-Turbo_petholatus.jpg",col:"#4CAF50"},
+{fr:"Guêpe / Abeille",sci:"Polistes olivaceus",en:"Paper Wasp / Bee",p:"aamuu (Koumac)",k:"mabo (Poum)",cat:"Insectes",desc:"Hyménoptère social des régions tropicales. Construit des nids en papier mâché. Variante dialectale : aamuu à Koumac, mabo à Poum.",img:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Common_wasp_400.jpg/600px-Common_wasp_400.jpg",col:"#C9943A"},
+{fr:"Arbuste de rivage",sci:"Myoporum tenuifolium",en:"Boobialla / Waterbush",p:"amwat",k:"amwat",cat:"Plantes",desc:"Arbuste côtier robuste des rivages du Pacifique. Feuilles étroites, petites fleurs blanches. Résistant au vent et au sel marin.",img:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Myoporum_insulare.jpg/600px-Myoporum_insulare.jpg",col:"#2D5A27"},
+{fr:"Indigo",sci:"Indigofera suffruticosa",en:"Guatemalan Indigo",p:"aningo",k:"aningo",cat:"Plantes",desc:"Plante légumineuse dont on extrait la teinture bleue indigo. Grappes de petites fleurs roses. Famille des Papilionacées.",img:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Indigofera_suffruticosa.jpg/600px-Indigofera_suffruticosa.jpg",col:"#6B3FA0"},
+{fr:"Agave géant",sci:"Furcraea foetida",en:"Mauritius Hemp",p:"aloe",k:"aloe",cat:"Plantes",desc:"Grande plante succulente aux feuilles en rosette pouvant dépasser 2 m. Introduite dans le Pacifique. Utilisée pour ses fibres.",img:"https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Furcraea_foetida_Habitus.jpg/600px-Furcraea_foetida_Habitus.jpg",col:"#8B4A2B"},
+];
+
+var stats={};
+try{stats=JSON.parse(localStorage.getItem("nk2")||"{}");}catch(e){}
+var curLesson=null;
+var QS={};
+
+function saveStats(){try{localStorage.setItem("nk2",JSON.stringify(stats));}catch(e){}}
+
+function nav(id){
+  document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active");});
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0,0);
+}
+
+function badge(txt,col){
+  return '<span class="badge" style="background:'+col+'22;color:'+col+';border:1px solid '+col+'55">'+txt+'</span>';
+}
+function pbar(v,max,col){
+  var p=Math.min(100,Math.round(v/max*100));
+  return '<div class="pbar-wrap"><div class="pbar-fill" style="width:'+p+'%;background:'+col+'"></div></div>';
+}
+function norm(s){
+  return s.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9\s-]/g,"");
+}
+
+function renderHome(){
+  var done=(stats.completed||[]).length;
+  document.getElementById("h-done").textContent=done+"/7";
+  document.getElementById("h-pts").textContent=stats.totalScore||0;
+  var menu=[
+    {ico:"📖",lbl:"Leçons",sub:"7 thèmes",fn:"nav('s-lessons')",col:"#0A7E8C"},
+    {ico:"🧩",lbl:"Quiz",sub:"Choisir une leçon",fn:"nav('s-lessons')",col:"#D4603A"},
+    {ico:"🔁",lbl:"Révisions",sub:"Renforce la mémorisation",fn:"buildRevision();nav('s-revision')",col:"#2D5A27"},
+    {ico:"💬",lbl:"Expressions",sub:"Phrases du quotidien",fn:"buildExprs();nav('s-exprs')",col:"#C9943A"},
+    {ico:"🔀",lbl:"Nêlêmwa / Nixumwak",sub:"Toutes variantes (P)/(K)",fn:"buildDiff();nav('s-diff')",col:"#6B3FA0"},
+    {ico:"📊",lbl:"Statistiques",sub:"Ta progression",fn:"buildStats();nav('s-stats')",col:"#12B5C8"},
+    {ico:"🔬",lbl:"Faune & Flore",sub:"Photos & noms scientifiques",fn:"buildSpecies();nav('s-species')",col:"#2D7A4F"},
+  ];
+  var h="";
+  menu.forEach(function(m){
+    h+='<button class="menu-btn" onclick="'+m.fn+'" style="border:1px solid '+m.col+'44">'
+      +'<div class="menu-ico">'+m.ico+'</div>'
+      +'<div class="menu-lbl" style="color:#FAFAF8">'+m.lbl+'</div>'
+      +'<div class="menu-sub" style="color:'+m.col+'">'+m.sub+'</div>'
+      +'</button>';
+  });
+  document.getElementById("menu-grid").innerHTML=h;
+}
+
+function buildLessons(){
+  var h="";
+  LESSONS.forEach(function(l){
+    var done=(stats.completed||[]).indexOf(l.id)>=0;
+    var sc=(stats.scores||{})[l.id];
+    var sc_h=sc?pbar(sc.correct,sc.total,l.theme)+'<div style="color:'+l.theme+';font-size:12px;margin-top:5px">'+Math.round(sc.correct/sc.total*100)+'% de réussite</div>':"";
+    h+='<button class="lesson-card" onclick="openLesson('+l.id+')" style="border:1px solid '+(done?l.theme+'66':'#ffffff11')+'">'
+      +'<div class="l-ico" style="background:'+l.theme+'22">'+l.emoji+'</div>'
+      +'<div class="l-info">'
+        +'<div class="l-title">'+badge("Niv."+l.level,l.theme)+(done?badge("✓","#2D5A27"):"")+' '+l.title+'</div>'
+        +'<div class="l-meta">'+l.voc.length+' mots · '+l.quiz.length+' questions</div>'
+        +sc_h
+      +'</div>'
+      +'<div style="color:'+l.theme+';font-size:18px">→</div>'
+      +'</button>';
+  });
+  document.getElementById("lessons-list").innerHTML=h;
+}
+
+function openLesson(id){
+  curLesson=null;
+  for(var i=0;i<LESSONS.length;i++){if(LESSONS[i].id===id){curLesson=LESSONS[i];break;}}
+  buildDetail("cours");
+  nav("s-detail");
+}
+
+function buildDetail(tab){
+  var l=curLesson;
+  var tabs=["cours","vocabulaire","expressions","différences"];
+  var tabs_h="";
+  tabs.forEach(function(t){
+    tabs_h+='<button class="tab-btn'+(tab===t?' on':'')+'" onclick="buildDetail(\''+t+'\')" style="'+(tab===t?'color:'+l.theme+';background:white':'color:white')+'">'+t+'</button>';
+  });
+  document.getElementById("d-hdr").innerHTML=
+    '<div class="tab-hdr" style="background:linear-gradient(135deg,'+l.theme+',#0D1F2D)">'
+    +'<div style="position:relative;z-index:1;padding:22px 16px 0">'
+    +'<button onclick="nav(\'s-lessons\')" style="color:rgba(255,255,255,.8);font-size:14px;display:block;margin-bottom:10px;background:transparent;border:0;cursor:pointer;font-family:Inter,sans-serif">← Retour</button>'
+    +'<div style="font-size:36px;margin-bottom:6px">'+l.emoji+'</div>'
+    +'<h2 style="font-family:\'Josefin Sans\',sans-serif;font-size:22px;color:white;margin-bottom:8px">'+l.title+'</h2>'
+    +badge("Niveau "+l.level,l.theme)
+    +'<div class="tabs-row">'+tabs_h+'</div>'
+    +'</div></div>';
+
+  var body="";
+  if(tab==="cours"){
+    body='<div style="background:#1A3448;border-radius:14px;padding:18px;margin-bottom:16px;color:#F2E8D5;line-height:1.8;font-size:14px">'+l.cours+'</div>'
+        +'<button onclick="startQuiz()" style="width:100%;background:'+l.theme+';border:0;border-radius:12px;padding:15px;color:white;font-family:\'Josefin Sans\',sans-serif;font-weight:700;font-size:15px;letter-spacing:1px;cursor:pointer">DÉMARRER LE QUIZ →</button>';
+  } else if(tab==="vocabulaire"){
+    body='<div class="vhead"><span style="color:'+l.theme+'">● Nêlêmwa (P)</span><span style="color:'+l.theme+'">● Nixumwak (K)</span><span style="color:'+l.theme+'">● Français</span></div>';
+    l.voc.forEach(function(v,i){
+      body+='<div class="vrow'+(i%2===0?' alt':'')+'"><span style="color:#12B5C8;font-weight:600;font-size:13px">'+v.p+'</span><span style="color:'+(v.k!==v.p?"#E8845F":"#777")+';font-size:13px">'+v.k+'</span><span style="color:#F2E8D5;font-size:12px">'+v.fr+'</span></div>';
+    });
+  } else if(tab==="expressions"){
+    l.expr.forEach(function(e){
+      body+='<div class="expr-card" style="border-left:4px solid '+l.theme+'">'
+           +'<span style="color:#12B5C8;font-family:\'Josefin Sans\',sans-serif;font-size:18px;font-weight:700">'+e.e+'</span>'
+           +'<span style="color:#F2E8D5;font-size:14px">'+e.t+'</span></div>';
+    });
+  } else {
+    if(!l.diff.length){body='<div style="color:#888;text-align:center;padding:40px">Aucune variante dans cette leçon.</div>';}
+    else{
+      body='<div class="diff-info">🔀 (P) = Nêlêmwa · (K) = Nixumwak</div>'
+          +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:8px;padding:0 6px">'
+          +'<span style="color:#12B5C8;font-size:10px;font-weight:700">● Nêlêmwa (P)</span>'
+          +'<span style="color:#E8845F;font-size:10px;font-weight:700">● Nixumwak (K)</span>'
+          +'<span style="color:#F2E8D5;font-size:10px;font-weight:700">● Français</span></div>';
+      l.diff.forEach(function(d){
+        body+='<div class="drow"><span style="color:#12B5C8;font-weight:700;font-size:13px">'+d.p+'</span><span style="color:#E8845F;font-weight:700;font-size:13px">'+d.k+'</span><span style="color:#F2E8D5;font-size:12px">'+d.fr+'</span></div>';
+      });
+    }
+  }
+  document.getElementById("d-body").innerHTML=body;
+}
+
+function startQuiz(){
+  QS={lesson:curLesson,idx:0,score:0,results:[],sel:null,fill:"",shown:false};
+  document.getElementById("q-prog").style.background=curLesson.theme;
+  document.getElementById("q-close").onclick=function(){nav("s-detail");};
+  renderQuiz();
+  nav("s-quiz");
+}
+
+function startRevQuiz(qs,title,emoji,theme){
+  curLesson={id:99,title:title,emoji:emoji,theme:theme,quiz:qs};
+  QS={lesson:curLesson,idx:0,score:0,results:[],sel:null,fill:"",shown:false};
+  document.getElementById("q-prog").style.background=theme;
+  document.getElementById("q-close").onclick=function(){nav("s-revision");};
+  renderQuiz();
+  nav("s-quiz");
+}
+
+function renderQuiz(){
+  var l=QS.lesson;
+  var q=l.quiz[QS.idx];
+  var total=l.quiz.length;
+  var shown=QS.shown;
+  var sel=QS.sel;
+  var fill=QS.fill;
+  var typeLbl={t:"Traduction",m:"Choix multiple",tf:"Vrai / Faux",f:"Compléter",s:"Construire",v:"Nêlêmwa/Nixumwak"};
+
+  document.getElementById("q-counter").textContent=(QS.idx+1)+" / "+total;
+  document.getElementById("q-pts").textContent=QS.score+" pts";
+  document.getElementById("q-prog").style.width=Math.round((QS.idx+1)/total*100)+"%";
+
+  var lastOk=QS.results.length>0?QS.results[QS.results.length-1].ok:null;
+
+  var ans_h="";
+  if(q.tp==="t"||q.tp==="m"){
+    ans_h='<div class="opts">';
+    q.o.forEach(function(opt,i){
+      var cls="opt";
+      if(shown){if(i===q.a)cls+=" ok";else if(i===sel&&i!==q.a)cls+=" ko";}
+      else if(i===sel)cls+=" sel";
+      ans_h+='<button class="'+cls+'" onclick="pickOpt('+i+')"'+(shown?" disabled":"")+'>'+
+        '<span style="color:'+l.theme+';margin-right:6px;font-family:\'Josefin Sans\',sans-serif">'+String.fromCharCode(65+i)+'.</span>'+opt+'</button>';
+    });
+    ans_h+='</div>';
+  } else if(q.tp==="tf"){
+    ans_h='<div class="tf-row">';
+    [[true,"✓ VRAI"],[false,"✗ FAUX"]].forEach(function(pair){
+      var v=pair[0],lbl=pair[1];
+      var cls="tf";
+      if(shown){if(v===q.a)cls+=" ok";else if(v===sel&&v!==q.a)cls+=" ko";}
+      else if(v===sel)cls+=" sel";
+      ans_h+='<button class="'+cls+'" onclick="pickTF('+v+')"'+(shown?" disabled":"")+'>'+lbl+'</button>';
+    });
+    ans_h+='</div>';
+  } else {
+    var bcol=shown?(norm(fill)===norm(q.a)?"#2D5A27":"#D4603A"):l.theme;
+    ans_h='<input id="fill-in" class="fill-inp'+(shown?(norm(fill)===norm(q.a)?" ok":" ko"):"")+'" placeholder="Écrivez votre réponse…" value="'+fill.replace(/"/g,'&quot;')+'"'+(shown?" disabled":"")+' style="border-color:'+bcol+'" oninput="QS.fill=this.value" onkeydown="if(event.key===\'Enter\')doCheck()">';
+    if(shown)ans_h+='<div class="fill-ans">Réponse correcte : <strong>'+q.a+'</strong></div>';
+  }
+
+  var fb_h=shown?'<div class="fb '+(lastOk?"ok":"ko")+'">'+(lastOk?"✅ Bonne réponse ! +10 pts":"❌ Ce n\'est pas ça…")+'</div>':"";
+  var btn_lbl=shown?(QS.idx+1>=total?"VOIR LES RÉSULTATS":"QUESTION SUIVANTE →"):"VALIDER";
+
+  document.getElementById("q-body").innerHTML=
+    '<div style="margin-bottom:12px">'+badge(typeLbl[q.tp]||q.tp,l.theme)+'</div>'
+    +'<div class="qbox" style="border:1px solid '+l.theme+'33"><p class="qtxt">'+q.q+'</p></div>'
+    +ans_h+fb_h
+    +'<button class="act-btn" onclick="'+(shown?"nextQ()":"doCheck()")+'" style="background:'+l.theme+'">'+btn_lbl+'</button>';
+
+  if(q.tp==="f"||q.tp==="s"||q.tp==="v"){
+    var fi=document.getElementById("fill-in");
+    if(fi){
+      fi.setAttribute("autocapitalize","off");
+      fi.setAttribute("autocorrect","off");
+      fi.setAttribute("autocomplete","off");
+      fi.setAttribute("spellcheck","false");
+    }
+  }
+}
+
+function pickOpt(i){if(QS.shown)return;QS.sel=i;renderQuiz();}
+function pickTF(v){if(QS.shown)return;QS.sel=v;renderQuiz();}
+
+function doCheck(){
+  if(QS.shown)return;
+  var q=QS.lesson.quiz[QS.idx];
+  var ok=false;
+  if(q.tp==="t"||q.tp==="m")ok=QS.sel===q.a;
+  else if(q.tp==="tf")ok=QS.sel===q.a;
+  else ok=norm(QS.fill)===norm(q.a);
+  QS.results.push({ok:ok,q:q});
+  if(ok)QS.score+=10;
+  QS.shown=true;
+  renderQuiz();
+}
+
+function nextQ(){
+  if(QS.idx+1>=QS.lesson.quiz.length){showResult();return;}
+  QS.idx++;QS.sel=null;QS.fill="";QS.shown=false;
+  renderQuiz();
+}
+
+function showResult(){
+  var total=QS.results.length;
+  var correct=QS.results.filter(function(r){return r.ok;}).length;
+  var pct=Math.round(correct/total*100);
+  var grades=[
+    {p:90,lbl:"Excellent !",col:"#2D5A27",e:"🏆"},
+    {p:75,lbl:"Très bien !",col:"#0A7E8C",e:"⭐"},
+    {p:60,lbl:"Bien !",col:"#C9943A",e:"👍"},
+    {p:0,lbl:"À revoir",col:"#D4603A",e:"📚"},
+  ];
+  var grade=grades[grades.length-1];
+  for(var i=0;i<grades.length;i++){if(pct>=grades[i].p){grade=grades[i];break;}}
+
+  document.getElementById("r-ico").textContent=grade.e;
+  document.getElementById("r-grade").textContent=grade.lbl;
+  document.getElementById("r-grade").style.color=grade.col;
+  document.getElementById("r-pct").textContent=pct+"%";
+  document.getElementById("r-pct").style.color=grade.col;
+  document.getElementById("r-sub").textContent=correct+"/"+total+" bonnes réponses · "+QS.score+" pts";
+
+  var list_h="";
+  QS.results.forEach(function(r){
+    list_h+='<div class="res-item"><span>'+(r.ok?"✅":"❌")+'</span><span style="color:'+(r.ok?"#9ef":"#E8845F")+'">'+r.q.q.slice(0,55)+'…</span></div>';
+  });
+  document.getElementById("r-list").innerHTML=list_h;
+
+  if(QS.lesson.id!==99){
+    stats.totalScore=(stats.totalScore||0)+QS.score;
+    stats.completed=stats.completed||[];
+    if(stats.completed.indexOf(QS.lesson.id)<0)stats.completed.push(QS.lesson.id);
+    stats.scores=stats.scores||{};
+    stats.scores[QS.lesson.id]={correct:correct,total:total,score:QS.score};
+    saveStats();
+    renderHome();
+    buildLessons();
+  }
+
+  document.getElementById("r-done").style.background=grade.col;
+  document.getElementById("r-retry").style.borderColor=QS.lesson.theme;
+  document.getElementById("r-retry").style.color=QS.lesson.theme;
+  document.getElementById("r-retry").onclick=function(){
+    QS={lesson:QS.lesson,idx:0,score:0,results:[],sel:null,fill:"",shown:false};
+    renderQuiz();nav("s-quiz");
+  };
+  document.getElementById("r-done").onclick=function(){
+    if(QS.lesson.id===99)nav("s-revision");
+    else{buildDetail("cours");nav("s-detail");}
+  };
+  nav("s-result");
+}
+
+function buildExprs(){
+  var h="";
+  LESSONS.forEach(function(l){
+    l.expr.forEach(function(e){
+      h+='<div class="expr-card" style="border-left:4px solid '+l.theme+'">'
+        +'<div><div style="color:'+l.theme+';font-family:\'Josefin Sans\',sans-serif;font-size:18px;font-weight:700">'+e.e+'</div>'
+        +'<div style="color:#F2E8D5;font-size:14px;margin-top:3px">'+e.t+'</div>'
+        +'<div style="color:#555;font-size:11px;margin-top:4px">'+l.title+'</div></div></div>';
+    });
+  });
+  document.getElementById("exprs-body").innerHTML=h;
+}
+
+function buildDiff(){
+  var h='<div class="info-box" style="color:#12B5C8">🔀 (P) = Nêlêmwa · (K) = Nixumwak · Variantes en orange.</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:8px;padding:0 6px">'
+    +'<span style="color:#12B5C8;font-size:10px;font-weight:700">● Nêlêmwa (P)</span>'
+    +'<span style="color:#E8845F;font-size:10px;font-weight:700">● Nixumwak (K)</span>'
+    +'<span style="color:#F2E8D5;font-size:10px;font-weight:700">● Français</span></div>';
+  LESSONS.forEach(function(l){
+    l.diff.forEach(function(d){
+      h+='<div class="drow" style="border-left:3px solid '+l.theme+'">'
+        +'<span style="color:#12B5C8;font-weight:700;font-size:13px">'+d.p+'</span>'
+        +'<span style="color:#E8845F;font-weight:700;font-size:13px">'+d.k+'</span>'
+        +'<div><div style="color:#F2E8D5;font-size:12px">'+d.fr+'</div><div style="color:#555;font-size:10px;margin-top:2px">'+l.title+'</div></div></div>';
+    });
+  });
+  document.getElementById("diff-body").innerHTML=h;
+}
+
+function buildStats(){
+  var done=(stats.completed||[]).length;
+  var scores=stats.scores||{};
+  var totalScore=stats.totalScore||0;
+  var totalWords=0;LESSONS.forEach(function(l){totalWords+=l.voc.length;});
+  var avg=0;
+  if(done>0){
+    var sum=0;
+    Object.keys(scores).forEach(function(k){var s=scores[k];sum+=s.correct/s.total*100;});
+    avg=Math.round(sum/done);
+  }
+  var h='<div class="stats-grid">'
+    +'<div class="stat-card" style="border:1px solid #C9943A33"><div style="font-size:26px">🏆</div><div style="font-size:26px;font-weight:700;color:#C9943A;font-family:\'Josefin Sans\',sans-serif">'+totalScore+'</div><div style="color:#888;font-size:12px;margin-top:4px">Points totaux</div></div>'
+    +'<div class="stat-card" style="border:1px solid #12B5C833"><div style="font-size:26px">🎯</div><div style="font-size:26px;font-weight:700;color:#12B5C8;font-family:\'Josefin Sans\',sans-serif">'+avg+'%</div><div style="color:#888;font-size:12px;margin-top:4px">Réussite moy.</div></div>'
+    +'<div class="stat-card" style="border:1px solid #2D5A2733"><div style="font-size:26px">📖</div><div style="font-size:26px;font-weight:700;color:#2D5A27;font-family:\'Josefin Sans\',sans-serif">'+done+"/7"+'</div><div style="color:#888;font-size:12px;margin-top:4px">Leçons finies</div></div>'
+    +'<div class="stat-card" style="border:1px solid #D4603A33"><div style="font-size:26px">📚</div><div style="font-size:26px;font-weight:700;color:#D4603A;font-family:\'Josefin Sans\',sans-serif">'+totalWords+'</div><div style="color:#888;font-size:12px;margin-top:4px">Mots au dico</div></div>'
+    +'</div>'
+    +'<h3 style="font-family:\'Josefin Sans\',sans-serif;margin-bottom:12px">Détail par leçon</h3>';
+  LESSONS.forEach(function(l){
+    var sc=scores[l.id];
+    var isDone=(stats.completed||[]).indexOf(l.id)>=0;
+    h+='<div style="background:#1A3448;border-radius:12px;padding:14px 16px;margin-bottom:8px">'
+      +'<div style="display:flex;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:4px">'
+      +'<span style="font-weight:600">'+l.emoji+' '+l.title+'</span>'
+      +(isDone?badge("✓","#2D5A27"):badge("—","#555"))
+      +'</div>'
+      +(sc?pbar(sc.correct,sc.total,l.theme)+'<div style="color:'+l.theme+';font-size:12px;margin-top:5px">'+sc.correct+"/"+sc.total+" · "+Math.round(sc.correct/sc.total*100)+"%</div>"
+          :'<div style="color:#555;font-size:13px">Pas encore tenté</div>')
+      +'</div>';
+  });
+  document.getElementById("stats-body").innerHTML=h;
+}
+
+function buildRevision(){
+  var all=[];LESSONS.forEach(function(l){l.quiz.forEach(function(q){all.push(q);});});
+  var day=all.filter(function(_,i){return i%3===0;});
+  var week=all.filter(function(_,i){return i%3!==0;});
+  var modes=[
+    {qs:day,title:"Révision du jour",emoji:"☀️",theme:"#C9943A",sub:day.length+" questions"},
+    {qs:week,title:"Révision de la semaine",emoji:"📅",theme:"#0A7E8C",sub:week.length+" questions"},
+    {qs:all,title:"Révision générale",emoji:"🌐",theme:"#D4603A",sub:all.length+" questions"},
+  ];
+  var h="";
+  modes.forEach(function(r,i){
+    h+='<button class="rev-card" onclick="startRevQuiz(window._revModes['+i+'].qs,\''+r.title+'\',\''+r.emoji+'\',\''+r.theme+'\')" style="border-color:'+r.theme+'44">'
+      +'<div style="font-size:34px">'+r.emoji+'</div>'
+      +'<div><div style="color:#FAFAF8;font-weight:700;font-family:\'Josefin Sans\',sans-serif;font-size:16px">'+r.title+'</div>'
+      +'<div style="color:'+r.theme+';font-size:13px;margin-top:4px">'+r.sub+'</div></div>'
+      +'<div style="margin-left:auto;color:'+r.theme+';font-size:18px">→</div>'
+      +'</button>';
+  });
+  window._revModes=modes;
+  document.getElementById("rev-body").innerHTML=h;
+}
+
+function buildSpecies(){
+  var cats=[];
+  SPECIES.forEach(function(s){if(cats.indexOf(s.cat)<0)cats.push(s.cat);});
+  var h='<div class="info-box" style="color:#12B5C8">Espèces identifiées depuis les noms scientifiques du dictionnaire. Appuyez pour voir la photo.</div>';
+  cats.forEach(function(cat){
+    h+='<div class="cat-lbl">'+cat+'</div>';
+    SPECIES.forEach(function(sp,idx){
+      if(sp.cat!==cat)return;
+      h+='<button class="sp-card" onclick="openSpecies('+idx+')" style="border-color:'+sp.col+'33">'
+        +'<div class="sp-img" style="background-image:url(\''+sp.img+'\')"></div>'
+        +'<div class="sp-info">'
+          +'<div class="sp-name">'+sp.fr+'</div>'
+          +'<div class="sp-sci">'+sp.sci+'</div>'
+          +'<div style="display:flex;gap:6px;flex-wrap:wrap">'
+            +'<span style="color:#12B5C8;font-size:12px;font-weight:600">'+sp.p+'</span>'
+            +'<span style="color:#555;font-size:12px"> · </span>'
+            +'<span style="color:#E8845F;font-size:12px;font-weight:600">'+sp.k+'</span>'
+          +'</div>'
+        +'</div>'
+        +'<div style="color:#888;font-size:16px;padding:0 12px;display:flex;align-items:center">→</div>'
+        +'</button>';
+    });
+  });
+  document.getElementById("sp-list").innerHTML=h;
+}
+
+function openSpecies(idx){
+  var sp=SPECIES[idx];
+  document.getElementById("sp-det-title").textContent=sp.fr;
+  var img_h=sp.img?'<img src="'+sp.img+'" alt="'+sp.fr+'" class="sp-det-img">':"";
+  document.getElementById("sp-det-body").innerHTML=
+    img_h+
+    '<div class="sp-det-body">'
+      +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">'
+        +'<span class="badge" style="background:'+sp.col+'22;color:'+sp.col+';border:1px solid '+sp.col+'44">'+sp.cat+'</span>'
+        +'<span style="color:#777;font-size:12px;font-style:italic">'+sp.sci+'</span>'
+      +'</div>'
+      +'<div class="sp-grid">'
+        +'<div><div class="sp-lbl" style="color:#12B5C8">NÊLÊMWA (P)</div><div class="sp-val">'+sp.p+'</div></div>'
+        +'<div><div class="sp-lbl" style="color:#E8845F">NIXUMWAK (K)</div><div class="sp-val">'+sp.k+'</div></div>'
+        +'<div style="grid-column:1/-1;border-top:1px solid #ffffff11;padding-top:10px;color:#888;font-size:12px;font-style:italic">EN: '+sp.en+'</div>'
+      +'</div>'
+      +'<div class="sp-desc">'+sp.desc+'</div>'
+      +'<div style="color:#333;font-size:11px;font-style:italic;text-align:center;margin-top:10px">Source : Dictionnaire Nêlêmwa–Nixumwak–Français–Anglais</div>'
+    +'</div>';
+  nav("s-sp-detail");
+}
+
+renderHome();
+buildLessons();
+</script>
+</body>
+</html>
